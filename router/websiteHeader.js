@@ -8,7 +8,16 @@ require('../db/conn');
 const WebsiteHeader = require('../model/WebsiteHeaderSchema');
 
 
-router.put('/updateCategory/:Id', upload.array('websiteheaderImage'), async (req, res) => {
+const storage = multer.diskStorage({
+  destination: './backend/uploads/',
+  filename: function (req, file, cb) {
+      cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
+  }
+});
+const upload = multer({ storage });
+
+
+router.put('/websiteheaderImage/:Id', upload.array('websiteheaderImage'), async (req, res) => {
     const { Email, MobileNunber } = req.body;
     const WebsiteHeaderId = req.params.Id;
     const currentDate = new Date();
@@ -19,25 +28,26 @@ router.put('/updateCategory/:Id', upload.array('websiteheaderImage'), async (req
   
       const fileNames = req.files.map((file) => file.filename);
   
-      const result = await Cat.updateOne(
+      const result = await WebsiteHeader.updateOne(
         { _Id: WebsiteHeaderId},
         {
           $set: {
             Email: Email,
             MobileNunber: MobileNunber,
             Image: fileNames,
-            catDate: currentDate
           },
         }
       );
   
       if (result.n === 0) {
-        return res.status(404).json({ error: 'Cat not found' });
+        return res.status(404).json({ error: 'Websiteheader  not found' });
       }
   
-      res.status(200).json({ message: 'Cat updated successfully' });
+      res.status(200).json({ message: 'Websiteheader updated successfully' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  module.exports = router;

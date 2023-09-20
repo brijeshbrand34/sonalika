@@ -5,6 +5,8 @@ const WebsiteHeaderSchema = new mongoose.Schema({
     Email: { type: String, required: true },
     MobileNunber: { type: Number, required: true },
     Image: { type: String },
+},{
+    timestamps:true
 })
 
 

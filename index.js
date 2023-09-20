@@ -31,6 +31,7 @@ app.use(require("./router/auth"));
 app.use(require("./router/Blog"));
 
 app.use(require("./router/Banner"));
+app.use(require("./router/blogBanner"));
 app.use(require("./router/contacts"));
 app.use(require("./router/product"));
 app.use(require("./router/review"));
@@ -38,11 +39,15 @@ app.use(require("./router/cart"));
 app.use(require("./router/order"));
 app.use(require("./router/brands"));
 app.use(require("./router/categories"));
+app.use(require("./router/featureProducts"));
+
 app.use(require("./router/subCategories"));
 app.use(require("./router/popUp"));
 
 
 app.use(require("./router/admin"));
+app.use(require("./router/websiteHeader"));
+
 app.use(express.urlencoded({ extended: true }));
 // app.get("/*", function (req, res) {
 //   res.sendFile(path.join(__dirname, "build", "index.html"));

@@ -65,15 +65,15 @@ function generateUniqueId() {
   console.log("getOne",SubCategoryId)
   console.log("get",req.params.id)
     try {
-      const SubCategory = await SubCategory.findOne({subCategoryId:SubCategoryId}); // Fetch the SubCategory based on the provided ID
+      const SubCategoryone = await SubCategory.findOne({subCategoryId:SubCategoryId}); // Fetch the SubCategory based on the provided ID
       
-      if (!SubCategory) {
+      if (!SubCategoryone) {
         return res.status(404).json({ error: "SubCategory not found" });
       }
       
-      console.log("SubCategory information for ID", SubCategoryId, ":", SubCategory);
+      console.log("SubCategory information for ID", SubCategoryId, ":", SubCategoryone);
       
-      res.json({ SubCategory }); // Send the SubCategory as JSON response
+      res.json({ SubCategoryone }); // Send the SubCategory as JSON response
     } catch (error) {
       console.error("Error fetching SubCategory:", error);
       res.status(500).json({ error: "Internal Server Error" });

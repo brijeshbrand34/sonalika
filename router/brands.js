@@ -95,7 +95,7 @@ router.get('/getOneBrand/:id', async (req, res) => {
 
 
 
-router.put('/update/:BrandId', upload.array('brandImage'), async (req, res) => {
+router.put('/Brand/update/:BrandId', upload.array('brandImage'), async (req, res) => {
   const { brandTitle,brandPublished } = req.body;
   const BrandId = req.params.BrandId;
   const currentDate = new Date();
