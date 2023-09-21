@@ -71,7 +71,7 @@ router.get('/getAllFeatureProducts', async (req, res) => {
 //   Get One Blog Banner
 router.get('/getOneFeatureProducts/:id', async (req, res) => {
     const FeatureProductsID = req.params.id;
-    console.log("getOne", BannerId)
+    console.log("getOne", FeatureProductsID)
     console.log("get", req.params.id)
     try {
         const FeatureProduct = await FeatureProducts.findOne({FeatureProductsId : FeatureProductsID }); // Fetch the Banner based on the provided ID
@@ -82,7 +82,7 @@ router.get('/getOneFeatureProducts/:id', async (req, res) => {
         console.log("FeatureProduct information for ID", FeatureProductId, ":", FeatureProduct);
         res.json({ FeatureProduct }); // Send the Banner as JSON response
     } catch (error) {
-        console.error("Error fetching Banner:", error);
+        console.error("Error fetching FeatureProduct:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });

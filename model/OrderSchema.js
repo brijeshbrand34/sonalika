@@ -38,6 +38,7 @@ userAddress2:{
 //--------------------order related
 orderId:{
     type:String,
+    unique: true
     //required:true
 },
 orderDate:{

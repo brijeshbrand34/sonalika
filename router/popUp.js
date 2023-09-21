@@ -97,7 +97,7 @@ router.put('/update/:popupId', upload.array('PopupImage'), async (req, res) => {
       const fileNames = req.files.map((file) => file.filename);
   
       const result = await PopUp.updateOne(
-        { BannerId: PopupId },
+        { PopupId: PopupId },
         {
           $set: {
             PopupTitle: PopupTitle,
@@ -111,6 +111,20 @@ router.put('/update/:popupId', upload.array('PopupImage'), async (req, res) => {
         return res.status(404).json({ error: 'PopUp not found' });
       }
       res.status(200).json({ message: 'PopUp updated successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
+
+  router.delete('/deletepopup/:popupId', async (req, res) => {
+    const popupID = req.params.popupId;
+    try {
+      const deletedpopup = await PopUp.findOneAndDelete({ PopupId : popupID });
+      if (!deletedpopup) {
+        return res.status(404).json({ error: 'PopUp not found' });
+      }
+      res.status(200).json({ message: 'PopUp deleted successfully' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });

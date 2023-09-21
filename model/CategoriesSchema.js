@@ -19,6 +19,7 @@ catImage:{
 },
 catId:{
     type:String,
+    unique: true
 },
 catDate:{
     type: Date

@@ -4,6 +4,7 @@ const CartSchema = new mongoose.Schema(
   {
     CartId: {
       type: String,
+      unique: true
       // required: true,
     },
     products:[{

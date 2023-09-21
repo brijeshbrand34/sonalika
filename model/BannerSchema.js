@@ -16,6 +16,7 @@ BannerLink:{
 },
 BannerId:{
     type:String,
+    unique: true,
     //required:true
 },
 BannerDate:{

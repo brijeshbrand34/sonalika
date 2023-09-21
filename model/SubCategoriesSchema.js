@@ -8,6 +8,7 @@ type:String,
 },
 catId:{
     type:String,
+    unique: true,
     //required:true
 },
 

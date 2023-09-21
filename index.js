@@ -43,6 +43,8 @@ app.use(require("./router/featureProducts"));
 
 app.use(require("./router/subCategories"));
 app.use(require("./router/popUp"));
+app.use(require("./router/topCollection"));
+
 
 
 app.use(require("./router/admin"));

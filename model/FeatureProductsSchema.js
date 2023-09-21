@@ -12,6 +12,7 @@ const FeatureProductsSchema = new mongoose.Schema({
     },
     FeatureProductsId: {
         type: String,
+        unique: true
         //required:true
     },
     FeatureProductsStartDate: {
