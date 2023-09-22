@@ -33,12 +33,13 @@ const upload = multer({ storage });
 
 // TopCollection Api to create 
 router.post('/addTopCollection', upload.array('TopCollectionImage'), (req, res) => {
-    const { TopCollectionTitle, TopCollectionStartdate, TopCollectionEnddate } = req.body;
+    const { TopCollectionTitle, TopCollectionLink,TopCollectionStartdate, TopCollectionEnddate } = req.body;
     const fileNames = req.files?.map(file => file.filename);
     console.log(fileNames)
     const newData = new TopCollection({
         TopCollectionId: 'TopCollection' + generateUniqueId(),
         TopCollectionTitle: TopCollectionTitle,
+        TopCollectionLink: TopCollectionLink,
         TopCollectionStartDate: TopCollectionStartdate,
         TopCollectionImage: fileNames,
         TopCollectionEndDate: TopCollectionEnddate
@@ -89,7 +90,7 @@ router.get('/getOneTopCollection/:TopCollectionId', async (req, res) => {
 
 // Update topCollection 
 router.put('/update/TopCollection/:TopCollectionId', upload.array('TopCollectionImage'), async (req, res) => {
-    const { TopCollectionTitle, TopCollectionStartdate, TopCollectionenddate } = req.body;
+    const { TopCollectionTitle, TopCollectionLink,TopCollectionStartdate, TopCollectionenddate } = req.body;
     const TopCollectionID = req.params.TopCollectionId;
     console.log(TopCollectionID);
     try {
@@ -102,6 +103,7 @@ router.put('/update/TopCollection/:TopCollectionId', upload.array('TopCollection
             {
                 $set: {
                     TopCollectionTitle: TopCollectionTitle,
+                    TopCollectionLink: TopCollectionLink,
                     TopCollectionStarDate: TopCollectionStartdate,
                     TopCollectionEndDate: TopCollectionenddate,
                     TopCollectionImage: fileNames,

@@ -6,6 +6,11 @@ const TopCollectionSchema = new mongoose.Schema({
         type: String,
         //required:true
     },
+    TopCollectionLink: {
+        type: String,
+        //required:true
+    },
+
     TopCollectionImage: {
         type: [String],
         //required:true

@@ -110,10 +110,6 @@ router.put('/updateSubCategory/:SubCategoryId', async (req, res) => {
   }
 });
 
-
-
-
-
   router.delete('/deleteSubCategory/:SubCategoryId', async (req, res) => {
     const SubCategoryId = req.params.SubCategoryId;
     try {
