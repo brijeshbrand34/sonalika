@@ -2,10 +2,7 @@ const jwt = require('jsonwebtoken');
 const mongoose = require('mongoose');
 const TopCollectionSchema = new mongoose.Schema({
 
-    TopCollectionTitle: {
-        type: String,
-        //required:true
-    },
+
     TopCollectionLink: {
         type: String,
         //required:true
@@ -20,10 +17,7 @@ const TopCollectionSchema = new mongoose.Schema({
         unique: true,
         //required:true
     },
-    TopCollectionStartDate: {
-        type: String
-    },
-    TopCollectionEndDate: {
+    CatagoryId: {
         type: String
     },
     TopCollectionPublished: {
