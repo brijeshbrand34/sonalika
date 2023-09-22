@@ -39,6 +39,7 @@ router.post('/addHomeAds', upload.array('HomeAdsImage'), (req, res) => {
     const newData = new HomeAds({
         HomeAdsId: 'HomeAds' + generateUniqueId(),
         HomeAdsTitle: HomeAdsTitle,
+        HomeAdsDiscription:HomeAdsDiscription,
         HomeAdsLink: HomeAdsLink,
         HomeAdsStartDate: HomeAdsStartdate,
         HomeAdsImage: fileNames,
@@ -59,9 +60,9 @@ router.post('/addHomeAds', upload.array('HomeAdsImage'), (req, res) => {
 //   Get app TopCollection 
 router.get('/getAllHomeAds', async (req, res) => {
     try {
-        const HomeAds = await HomeAds.find({}); 
-        console.log("This is the Banner information:", HomeAds);
-        res.json(HomeAds); 
+        const HomeAd = await HomeAds.find({}); 
+        console.log("This is the Banner information:", HomeAd);
+        res.json(HomeAd); 
     } catch (error) {
         console.error("Error fetching Banners:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -80,7 +81,7 @@ router.get('/getOneHomeAds/:HomeAdsId', async (req, res) => {
         if (!HomeAd) {
             return res.status(404).json({ error: "HomeAds not found" });
         }
-        console.log("HomeAds information for ID", TopCollectionId, ":", HomeAd);
+        console.log("HomeAds information for ID", HomeAdsId, ":", HomeAd);
         res.json({ HomeAd });
     } catch (error) {
         console.error("Error fetching HomeAds:", error);
@@ -90,8 +91,8 @@ router.get('/getOneHomeAds/:HomeAdsId', async (req, res) => {
 
 // Update topCollection 
 router.put('/update/HomeAds/:HomeAdsId', upload.array('HomeAdsImage'), async (req, res) => {
-    const { HomeAdsTitle, HomeAdsLink,HomeAdsStartdate, HomeAdsenddate } = req.body;
-    const TopCollectionID = req.params.TopCollectionId;
+    const { HomeAdsTitle, HomeAdsLink, HomeAdsDiscription,HomeAdsStartdate, HomeAdsenddate } = req.body;
+    const HomeAdsID = req.params.HomeAdsId;
     console.log(HomeAdsID);
     try {
         if (!req.files || !req.files.length) {
@@ -104,6 +105,7 @@ router.put('/update/HomeAds/:HomeAdsId', upload.array('HomeAdsImage'), async (re
                 $set: {
                     HomeAdsTitle: HomeAdsTitle,
                     HomeAdsLink: HomeAdsLink,
+                    HomeAdsDiscription:HomeAdsDiscription,
                     TopCollectionStarDate: HomeAdsStartdate,
                     HomeAdsEndDate: HomeAdsenddate,
                     HomeAdsImage: fileNames,
@@ -122,14 +124,14 @@ router.put('/update/HomeAds/:HomeAdsId', upload.array('HomeAdsImage'), async (re
 });
 
 // Delete top Collection 
-router.delete('/deleteTopCollection/:TopCollectionId', async (req, res) => {
-    const TopCollectionID = req.params.TopCollectionId;
+router.delete('/deleteHomeAds/:HomeAdsId', async (req, res) => {
+    const HomeAdsID = req.params.HomeAdsId;
     try {
-      const deletedTopCollection = await TopCollection.findOneAndDelete({ TopCollectionId : TopCollectionID });
+      const deletedHomeAds = await HomeAds.findOneAndDelete({ HomeAdsId : HomeAdsID });
       if (!deletedTopCollection) {
-        return res.status(404).json({ error: 'TopCollection not found' });
+        return res.status(404).json({ error: 'HomeAds not found' });
       }
-      res.status(200).json({ message: 'TopCollection deleted successfully' });
+      res.status(200).json({ message: 'HomeAds deleted successfully' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
