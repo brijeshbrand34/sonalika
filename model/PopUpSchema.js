@@ -5,7 +5,7 @@ const PopUpSchema = new mongoose.Schema({
     PopupId: { type: String, required: true , unique: true, },
     PopupTitle: { type: String, required: true },
     PopupLink: { type: String, required: true },
-    PopupImage: { type: String },
+    PopupImage: { type: [String] },
     PopupPublish: { type: Boolean, default: false }
 })
 

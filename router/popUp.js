@@ -85,7 +85,7 @@ router.get('/getOnePopUp/:id', async (req, res) => {
   });
 
 // update popup
-router.put('/update/:popupId', upload.array('PopupImage'), async (req, res) => {
+router.put('/updatepopup/:popupId', upload.array('PopupImage'), async (req, res) => {
     const { PopupTitle, PopupLink } = req.body;
     const PopupId = req.params.popupId;
   
