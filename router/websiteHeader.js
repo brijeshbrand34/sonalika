@@ -46,7 +46,7 @@ router.put('/websiteheaderImage/:Id', upload.array('websiteheaderImage'), async 
       res.status(200).json({ message: 'Websiteheader updated successfully' });
     } catch (error) {
       console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+      res.status(500).json({ error: 'Internal server error ' });
     }
   });
 
