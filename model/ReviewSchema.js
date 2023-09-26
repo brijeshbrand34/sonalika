@@ -9,23 +9,23 @@ const ReviewSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    review_rating: {
+    Review_rating: {
       type: String,
       required: true,
     },
-    review_text: {
+    Review_text: {
       type: String,
       required: true,
     },
-    product_id: {
-      type: Number,
-      required: true,
-    },
-    customer_id: {
+    Product_id: {
       type: String,
       required: true,
     },
-    customer_email: {
+    Customer_id: {
+      type: String,
+      required: true,
+    },
+    Customer_email: {
       type: String,
       required: true,
     },
