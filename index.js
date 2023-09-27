@@ -40,6 +40,8 @@ app.use(require("./router/order"));
 app.use(require("./router/brands"));
 app.use(require("./router/categories"));
 app.use(require("./router/featureProducts"));
+app.use(require("./router/coupons"));
+
 
 app.use(require("./router/subCategories"));
 app.use(require("./router/popUp"));
