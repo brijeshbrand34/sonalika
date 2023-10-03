@@ -72,7 +72,7 @@ router.get('/getOnePartnersReview/:id', async (req, res) => {
         const PartnersReviews = await PartnersReview.findOne({ PartnersReviewId: PartnersReviewId });
 
         if (!PartnersReviews) {
-            return res.status(404).json({ error: "Banner not found" });
+            return res.status(404).json({ error: "PartnersReviewId not found" });
         }
 
         console.log("PartnersReview information for ID", PartnersReviewId, ":", PartnersReviews);
