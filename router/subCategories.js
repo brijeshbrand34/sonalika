@@ -7,6 +7,8 @@ const multer = require('multer');
 const path = require('path');
 require('../db/conn');
 const SubCategory =require("../model/SubCategoriesSchema");
+const Cat = require('../model/CategoriesSchema');
+
 function generateUniqueId() {
   const date = new Date();
   const year = date.getFullYear().toString();
@@ -48,7 +50,7 @@ function generateUniqueId() {
 
   router.get('/getAllSubCategorys', async (req, res) => {
     try {
-      const SubCategorys = await SubCategory.find({}); // Fetch all SubCategorys from the database
+      const SubCategorys = await SubCategory.find({}).populate('catId'); // Fetch all SubCategorys from the database
       
       console.log("This is the SubCategory information:", SubCategorys);
       
@@ -65,7 +67,7 @@ function generateUniqueId() {
   console.log("getOne",SubCategoryId)
   console.log("get",req.params.id)
     try {
-      const SubCategoryone = await SubCategory.findOne({subCategoryId:SubCategoryId}); // Fetch the SubCategory based on the provided ID
+      const SubCategoryone = await SubCategory.findOne({subCategoryId:SubCategoryId}).populate('catId'); // Fetch the SubCategory based on the provided ID
       
       if (!SubCategoryone) {
         return res.status(404).json({ error: "SubCategory not found" });

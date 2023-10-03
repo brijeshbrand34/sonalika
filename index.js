@@ -41,6 +41,7 @@ app.use(require("./router/brands"));
 app.use(require("./router/categories"));
 app.use(require("./router/featureProducts"));
 app.use(require("./router/coupons"));
+app.use(require("./router/careers"));
 
 
 app.use(require("./router/subCategories"));

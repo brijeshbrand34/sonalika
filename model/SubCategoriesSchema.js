@@ -7,7 +7,8 @@ type:String,
 //required:true
 },
 catId:{
-    type:String,
+    type:mongoose.Schema.Types.ObjectId,
+    ref: 'Cat',
     unique: true,
     //required:true
 },
