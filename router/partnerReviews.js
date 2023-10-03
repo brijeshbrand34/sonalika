@@ -131,4 +131,29 @@ router.delete('/deletePartnersReviews/:PartnersReviewId', async (req, res) => {
     }
 });
 
+router.put('/publishPartnersReview/:PartnersReviewId', async (req, res) => {
+    const { published } = req.body;
+    const PartnersReviewID = req.params.PartnersReviewId;
+
+    try {
+        const result = await PartnersReview.updateOne(
+            { PartnersReviewId: PartnersReviewID },
+            {
+                $set: {
+                    PartnersReviewPublished: published,
+                },
+            }
+        );
+        console.log("result-----", result);
+
+        if (result.n === 0) {
+            return res.status(404).json({ error: 'PartnersReview Published not found' });
+        }
+
+        res.status(200).json({ message: 'PartnersReview published update successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
 module.exports = router;

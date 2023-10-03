@@ -131,4 +131,29 @@ router.delete('/deleteFeatureProducts/:FeatureProductsId', async (req, res) => {
     }
   });
   
+  router.put('/publishFeatureProducts/:FeatureProductsId', async (req, res) => {
+    const { published } = req.body;
+    const FeatureProductsID = req.params.FeatureProductsId;
+  
+    try {
+      const result = await FeatureProducts.updateOne(
+        { FeatureProductsId: FeatureProductsID },
+        {
+          $set: {
+            FeatureProductsPublished: published,
+          },
+        }
+      );
+      console.log("result-----", result);
+  
+      if (result.n === 0) {
+        return res.status(404).json({ error: 'FeatureProducts not found' });
+      }
+  
+      res.status(200).json({ message: 'FeatureProducts published update successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
   module.exports = router;

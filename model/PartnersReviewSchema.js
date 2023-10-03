@@ -6,6 +6,7 @@ const PartnersReviewSchema = new mongoose.Schema({
     PartnersReviewName: { type: String, required: true },
     PartnersReview: { type: String, required: true },
     PartnersReviewImage: { type: {String} },
+    PartnersReviewPublished: { type: Boolean,default: false}
 },{
     timestamps:true  
 })

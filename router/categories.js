@@ -152,6 +152,32 @@ router.delete('/deleteCat/:CatId', async (req, res) => {
   }
 });
 
+router.put('/publishCategory/:CatId', async (req, res) => {
+  const { published } = req.body;
+  const CatID = req.params.CatId;
+
+  try {
+    const result = await Cat.updateOne(
+      { CatId: CatID },
+      {
+        $set: {
+          catPublished: published,
+        },
+      }
+    );
+    console.log("result-----", result);
+
+    if (result.n === 0) {
+      return res.status(404).json({ error: 'Category not found' });
+    }
+
+    res.status(200).json({ message: 'Category published update successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;
 
 

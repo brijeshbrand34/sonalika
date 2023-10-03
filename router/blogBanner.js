@@ -120,15 +120,41 @@ router.put('/update/Blog-banner/:BlogBannerId', upload.array('BlogBannerImage'),
 router.delete('/deleteBlogBanner/:BlogBannerId', async (req, res) => {
     const BlogBannerId = req.params.BlogBannerId;
     try {
-      const deletedBlogBanner = await BlogBanner.findOneAndDelete({ BlogBannerId : BlogBannerId });
-      if (!deletedBlogBanner) {
-        return res.status(404).json({ error: 'Banner not found' });
-      }
-      res.status(200).json({ message: 'Banner deleted successfully' });
+        const deletedBlogBanner = await BlogBanner.findOneAndDelete({ BlogBannerId: BlogBannerId });
+        if (!deletedBlogBanner) {
+            return res.status(404).json({ error: 'Banner not found' });
+        }
+        res.status(200).json({ message: 'Banner deleted successfully' });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  });
-  
-  module.exports = router;
+});
+
+router.put('/publishBlogBanner/:BlogBannerId', async (req, res) => {
+    const { published } = req.body;
+    const BlogBannerID = req.params.BlogBannerId;
+
+    try {
+        const result = await BlogBanner.updateOne(
+            { BlogBannerId: BlogBannerID },
+            {
+                $set: {
+                    BlogBannerPublished: published,
+                },
+            }
+        );
+        console.log("result-----", result);
+
+        if (result.n === 0) {
+            return res.status(404).json({ error: 'BlogBanner Published not found' });
+        }
+
+        res.status(200).json({ message: 'BlogBanner published update successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+module.exports = router;

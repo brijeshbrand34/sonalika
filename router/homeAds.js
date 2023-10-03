@@ -33,13 +33,13 @@ const upload = multer({ storage });
 
 // TopCollection Api to create 
 router.post('/addHomeAds', upload.array('HomeAdsImage'), (req, res) => {
-    const { HomeAdsTitle,HomeAdsDiscription,HomeAdsLink,HomeAdsStartdate, HomeAdsEnddate } = req.body;
+    const { HomeAdsTitle, HomeAdsDiscription, HomeAdsLink, HomeAdsStartdate, HomeAdsEnddate } = req.body;
     const fileNames = req.files?.map(file => file.filename);
     console.log(fileNames)
     const newData = new HomeAds({
         HomeAdsId: 'HomeAds' + generateUniqueId(),
         HomeAdsTitle: HomeAdsTitle,
-        HomeAdsDiscription:HomeAdsDiscription,
+        HomeAdsDiscription: HomeAdsDiscription,
         HomeAdsLink: HomeAdsLink,
         HomeAdsStartDate: HomeAdsStartdate,
         HomeAdsImage: fileNames,
@@ -60,9 +60,9 @@ router.post('/addHomeAds', upload.array('HomeAdsImage'), (req, res) => {
 //   Get app TopCollection 
 router.get('/getAllHomeAds', async (req, res) => {
     try {
-        const HomeAd = await HomeAds.find({}); 
+        const HomeAd = await HomeAds.find({});
         console.log("This is the Banner information:", HomeAd);
-        res.json(HomeAd); 
+        res.json(HomeAd);
     } catch (error) {
         console.error("Error fetching Banners:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -76,7 +76,7 @@ router.get('/getOneHomeAds/:HomeAdsId', async (req, res) => {
     console.log("getOne", HomeAdsId)
     console.log("get", req.params.HomeAdsId)
     try {
-            HomeAd = await HomeAds.findOne({HomeAdsId : HomeAdsID }); 
+        HomeAd = await HomeAds.findOne({ HomeAdsId: HomeAdsID });
 
         if (!HomeAd) {
             return res.status(404).json({ error: "HomeAds not found" });
@@ -91,7 +91,7 @@ router.get('/getOneHomeAds/:HomeAdsId', async (req, res) => {
 
 // Update topCollection 
 router.put('/update/HomeAds/:HomeAdsId', upload.array('HomeAdsImage'), async (req, res) => {
-    const { HomeAdsTitle, HomeAdsLink, HomeAdsDiscription,HomeAdsStartdate, HomeAdsenddate } = req.body;
+    const { HomeAdsTitle, HomeAdsLink, HomeAdsDiscription, HomeAdsStartdate, HomeAdsenddate } = req.body;
     const HomeAdsID = req.params.HomeAdsId;
     console.log(HomeAdsID);
     try {
@@ -100,12 +100,12 @@ router.put('/update/HomeAds/:HomeAdsId', upload.array('HomeAdsImage'), async (re
         }
         const fileNames = req.files.map((file) => file.filename);
         const result = await HomeAds.updateOne(
-            { HomeAdsId : HomeAdsID },
+            { HomeAdsId: HomeAdsID },
             {
                 $set: {
                     HomeAdsTitle: HomeAdsTitle,
                     HomeAdsLink: HomeAdsLink,
-                    HomeAdsDiscription:HomeAdsDiscription,
+                    HomeAdsDiscription: HomeAdsDiscription,
                     TopCollectionStarDate: HomeAdsStartdate,
                     HomeAdsEndDate: HomeAdsenddate,
                     HomeAdsImage: fileNames,
@@ -127,15 +127,41 @@ router.put('/update/HomeAds/:HomeAdsId', upload.array('HomeAdsImage'), async (re
 router.delete('/deleteHomeAds/:HomeAdsId', async (req, res) => {
     const HomeAdsID = req.params.HomeAdsId;
     try {
-      const deletedHomeAds = await HomeAds.findOneAndDelete({ HomeAdsId : HomeAdsID });
-      if (!deletedTopCollection) {
-        return res.status(404).json({ error: 'HomeAds not found' });
-      }
-      res.status(200).json({ message: 'HomeAds deleted successfully' });
+        const deletedHomeAds = await HomeAds.findOneAndDelete({ HomeAdsId: HomeAdsID });
+        if (!deletedTopCollection) {
+            return res.status(404).json({ error: 'HomeAds not found' });
+        }
+        res.status(200).json({ message: 'HomeAds deleted successfully' });
     } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
     }
-  });
-  
-  module.exports = router;
+});
+
+router.put('/publishHomeAds/:HomeAdsId', async (req, res) => {
+    const { published } = req.body;
+    const HomeAdsID = req.params.HomeAdsId;
+
+    try {
+        const result = await HomeAds.updateOne(
+            { HomeAdsId: HomeAdsID },
+            {
+                $set: {
+                    HomeAdsPublished: published,
+                },
+            }
+        );
+        console.log("result-----", result);
+
+        if (result.n === 0) {
+            return res.status(404).json({ error: 'HomeAds Published not found' });
+        }
+
+        res.status(200).json({ message: 'HomeAds published update successfully' });
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
+
+module.exports = router;

@@ -122,7 +122,7 @@ router.post('/adminSignin', async (req, res) => {
         res.status(400).json({ error: 'invalid credentials' });
       }
       else {
-        res.json({ message: 'Admin Signin successfully', AdminID: AdminLogin._id });
+        res.json({ message: 'Admin Signin successfully', AdminID: AdminLogin._id ,Admin:AdminLogin });
       }
 
     }
