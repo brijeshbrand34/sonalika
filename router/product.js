@@ -124,7 +124,7 @@ router.get('/getOneProduct/:id', async (req, res) => {
 });
 
 
-router.put('/updateProducts/:ProductId', upload.array('productMainImage'), (req, res) => {
+router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async (req, res) => {
   const {
     productTitle,
     productCategory,
@@ -153,30 +153,31 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), (req,
   const fileNames = req.files?.map(file => file.filename);
 
   try {
-    const result = Product.updateOne({ productId: ProductId }, {
-      $set: {
-        productTitle: productTitle,
-        productCategory: productCategory,
-        productBrand: productBrand,
-        productTags: productTags,
-        productShortDescription: productShortDescription,
-        productDescription: productDescription,
-
-        productMainImage: fileNames,
-        productPrice: productPrice,
-
-        productStock: productStock,
-
-        productSkuCode: productSkuCode,
-        featuredDeals: featuredDeals,
-        newCollection: newCollection,
-        dealsOfTheWeek: dealsOfTheWeek,
-        published: published,
-        productDate: new Date()
-
+    const result = await Product.updateOne(
+      { productId: ProductId },
+      {
+        $set: {
+          productTitle,
+          productCategory,
+          productBrand,
+          productTags,
+          productShortDescription,
+          productDescription,
+          productMainImage: fileNames,
+          productPrice,
+          productStock,
+          productSkuCode,
+          featuredDeals,
+          newCollection,
+          dealsOfTheWeek,
+          published: true,
+          productDate: new Date(),
+        },
       }
-    });
-    console.log("result-----" + result);
+    );
+
+    console.log("result-----", result);
+
     if (result.n === 0) {
       return res.status(404).json({ error: 'Product not found' });
     }
@@ -187,7 +188,6 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), (req,
     res.status(500).json({ error: 'Internal server error' });
   }
 });
-
 
 
 
@@ -207,6 +207,31 @@ router.delete('/deleteProduct/:ProductId', async (req, res) => {
   }
 });
 
+// To publish the products
+router.put('/publishProduct/:ProductId', async (req, res) => {
+  const { published } = req.body;
+  const ProductId = req.params.ProductId;
+
+  try {
+    const result = await Product.updateOne(
+      { productId: ProductId },
+      {
+        $set: {
+          published: published,
+        },
+      }
+    );
+    console.log("result-----", result);
+
+    if (result.n === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product published successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
+
 module.exports = router;
-
-

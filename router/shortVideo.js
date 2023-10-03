@@ -126,5 +126,32 @@ router.delete('/deleteShartVideo/:ShartVideoId', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  router.put('/publishshortVideo/:ShortVideoId', async (req, res) => {
+    const { published } = req.body;
+    const ShortVideoID = req.params.ShortVideoId;
+  
+    try {
+      const result = await PopUp.updateOne(
+        { ShartVideoId: ShortVideoID },
+        {
+          $set: {
+            ShartVideoPublished: published,
+          },
+        }
+      );
+  
+      console.log("result-----", result);
+  
+      if (result.n === 0) {
+        return res.status(404).json({ error: 'Short video not found' });
+      }
+  
+      res.status(200).json({ message: 'Short Video published successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
   
   module.exports = router;

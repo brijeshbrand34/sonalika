@@ -131,5 +131,32 @@ router.put('/updatepopup/:popupId', upload.array('PopupImage'), async (req, res)
     }
   });
 
+  // To publish the products
+router.put('/publishUp/:popUpId', async (req, res) => {
+  const { published } = req.body;
+  const PopupId = req.params.popUpId;
+
+  try {
+    const result = await PopUp.updateOne(
+      { PopupId: PopupId },
+      {
+        $set: {
+          PopupPublish: published,
+        },
+      }
+    );
+
+    console.log("result-----", result);
+
+    if (result.n === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product published successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+});
 module.exports = router;
 

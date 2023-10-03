@@ -38,7 +38,7 @@ const AdminSchema = new mongoose.Schema(
 
 
 AdminSchema.pre("save", async function (next) {
-  console.log("hi from inside");
+  console.log("hi from inside" || this.isNew);
   if (this.isModified("password")) {
     this.password = await bcrypt.hash(this.password, 12);
   }

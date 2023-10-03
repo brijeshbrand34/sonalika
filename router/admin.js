@@ -101,7 +101,7 @@ router.post('/adminSignin', async (req, res) => {
 
     let token;
     const { email, password } = req.body;
-    console.log( req.body);
+    console.log(req.body);
     if (!email || !password) {
       return res.status(400).json({ error: 'plz filled the data' });
 
@@ -122,7 +122,7 @@ router.post('/adminSignin', async (req, res) => {
         res.status(400).json({ error: 'invalid credentials' });
       }
       else {
-        res.json({ message: 'Admin Signin successfully', AdminID:AdminLogin._id});
+        res.json({ message: 'Admin Signin successfully', AdminID: AdminLogin._id });
       }
 
     }
@@ -175,32 +175,27 @@ router.delete("/deleteAdmin/:AdminId", async (req, res) => {
 
 // Update
 router.put("/AdminUpdate/:AdminId", upload.array('profileImage'), async (req, res) => {
-  const AdminId = req.params._id;
-  const updates = req.body;
-  const { name, email, password, } = req.body;
+  const AdminId = req.params.AdminId;
+  const { name, email, password } = req.body;
 
   try {
-
-    // if (!req.files || !req.files.length) {
-    //   return res.status(400).json({ error: 'No files uploaded.' });
-    // }
-
     const fileNames = req.files.map((file) => file.filename);
 
+    // Find the admin
+    const adminToUpdate = await Admin.findById(AdminId);
 
-    const result = await Admin.updateOne({ AdminId: AdminId }, {
-      $set: {
-        name: name,
-
-        email: email,
-        password: password,
-        profileImage: fileNames,
-      }
-    });
-
-    if (result.n === 0) {
+    if (!adminToUpdate) {
       return res.status(404).json({ error: "Admin not found" });
     }
+
+    // Update the fields
+    adminToUpdate.name = name;
+    adminToUpdate.email = email;
+    adminToUpdate.password = password;  // Include the password in the update
+    adminToUpdate.profileImage = fileNames;
+
+    // Save the changes to trigger the pre middleware
+    await adminToUpdate.save();
 
     res.status(200).json({ message: "Admin updated successfully" });
   } catch (error) {
@@ -208,6 +203,7 @@ router.put("/AdminUpdate/:AdminId", upload.array('profileImage'), async (req, re
     res.status(500).json({ error: "Internal server error" });
   }
 });
+
 
 router.get("/adminlogout", (req, res) => {
   console.log("this is logout page");
