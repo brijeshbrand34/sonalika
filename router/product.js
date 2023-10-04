@@ -131,7 +131,7 @@ router.get('/getOneProduct/:id', async (req, res) => {
 });
 
 
-router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async (req, res) => {
+/* router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async (req, res) => {
   const {
     productTitle,
     productCategory,
@@ -180,6 +180,82 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async
           published: true,
           productDate: new Date(),
         },
+      }
+    );
+
+    console.log("result-----", result);
+
+    if (result.n === 0) {
+      return res.status(404).json({ error: 'Product not found' });
+    }
+
+    res.status(200).json({ message: 'Product updated successfully' });
+  } catch (error) {
+    console.error(error);
+    res.status(500).json({ error: 'Internal server error' });
+  }
+}); */
+router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async (req, res) => {
+  const {
+    productTitle,
+    productCategory,
+    productBrand,
+    productTags,
+    productShortDescription,
+    productDescription,
+    productPrice,
+    productStock,
+    published,
+    productSkuCode,
+    featuredDeals,
+    newCollection,
+    dealsOfTheWeek,
+  } = req.body;
+  const ProductId = req.params.ProductId;
+
+  console.log(req.body);
+
+  if (!req.files || !req.files.length) {
+    return res.status(400).json({ error: 'No files uploaded.' });
+  }
+
+  const fileNames = req.files?.map(file => file.filename);
+
+  try {
+    const updateFields = {
+      productTitle,
+      productCategory,
+      productBrand,
+      productTags,
+      productShortDescription,
+      productDescription,
+      productMainImage: fileNames,
+      productPrice,
+      productStock,
+      productSkuCode,
+      featuredDeals,
+      newCollection,
+      dealsOfTheWeek,
+      published: true,
+      productDate: new Date(),
+    };
+
+    // Check the product category and add specific fields accordingly
+    if (productCategory === 'gold') {
+      const { goldWeight, goldCarat } = req.body;
+      updateFields.gold = { weight: goldWeight, carat: goldCarat };
+    } else if (productCategory === 'silver') {
+      const { silverWeight } = req.body;
+      updateFields.silver = { weight: silverWeight };
+    } else if (productCategory === 'diamond') {
+      const { diamondCarat } = req.body;
+      updateFields.diamond = { carat: diamondCarat };
+    }
+
+    const result = await Product.updateOne(
+      { productId: ProductId },
+      {
+        $set: updateFields,
       }
     );
 
