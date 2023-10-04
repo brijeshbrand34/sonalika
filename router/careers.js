@@ -50,7 +50,7 @@ router.get('/getOneCareers/:id', async (req, res) => {
     console.log("getOne", CareersId)
     console.log("get", req.params.id)
     try {
-        const Career = await Careers.findOne({ CareersIdId: CareersID });
+        const Career = await Careers.findOne({ CareersId: CareersID });
 
         if (!Career) {
             return res.status(404).json({ error: "Career not found" });
