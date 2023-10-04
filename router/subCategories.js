@@ -125,6 +125,26 @@ router.put('/updateSubCategory/:SubCategoryId', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+
+  router.get('/categoriesWithSubcategories', async (req, res) => {
+    try {
+        const categoriesWithSubcategories = await Cat.aggregate([
+            {
+                $lookup: {
+                    from: 'subcategories', // The name of the SubCategory collection
+                    localField: '_id',
+                    foreignField: 'catId',
+                    as: 'subcategories',
+                },
+            },
+        ]);
+
+        res.json(categoriesWithSubcategories);
+    } catch (error) {
+        console.error('Error fetching categories with subcategories:', error);
+        res.status(500).json({ error: 'Internal server error' });
+    }
+});
   
 module.exports=router;
 

@@ -41,40 +41,46 @@ router.post('/addProduct', upload.array('productMainImage'), (req, res) => {
     productTags,
     productShortDescription,
     productDescription,
-
-    // productMainImage,
     productPrice,
-
     productStock,
-
     productSkuCode,
     featuredDeals,
     newCollection,
     dealsOfTheWeek,
   } = req.body;
+
   const fileNames = req.files?.map(file => file.filename);
 
   const newData = new Product({
     productId: 'prod' + generateUniqueId(),
-    productTitle: productTitle,
-    productCategory: productCategory,
-    productBrand: productBrand,
-    productTags: productTags,
-    productShortDescription: productShortDescription,
-    productDescription: productDescription,
-
-    productMainImage: fileNames,
-    productPrice: productPrice,
-
-    productStock: productStock,
-
-    productSkuCode: productSkuCode,
-    featuredDeals: featuredDeals,
-    newCollection: newCollection,
-    dealsOfTheWeek: dealsOfTheWeek,
+    productTitle,
+    productCategory,
+    productBrand,
+    productTags,
+    productShortDescription,
+    productDescription,
+    productPrice,
+    productStock,
+    productSkuCode,
+    featuredDeals,
+    newCollection,
+    dealsOfTheWeek,
     published: true,
-    productDate: new Date()
+    productDate: new Date(),
+    productMainImage: fileNames,
   });
+
+  // Check the product category and add specific fields accordingly
+  if (productCategory === 'gold') {
+    const { goldWeight, goldCarat } = req.body;
+    newData.gold = { weight: goldWeight, carat: goldCarat };
+  } else if (productCategory === 'silver') {
+    const { silverWeight } = req.body;
+    newData.silver = { weight: silverWeight };
+  } else if (productCategory === 'diamond') {
+    const { diamondCarat } = req.body;
+    newData.diamond = { carat: diamondCarat };
+  }
 
   newData.save()
     .then(data => {
@@ -86,6 +92,7 @@ router.post('/addProduct', upload.array('productMainImage'), (req, res) => {
       res.status(500).json({ error: 'Failed to save form data and files.' });
     });
 });
+
 
 
 
@@ -147,9 +154,9 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async
   console.log(req.body);
 
   //     
-  // if (!req.files || !req.files.length) {
-  //     return res.status(400).json({ error: 'No files uploaded.' });
-  //   }
+  if (!req.files || !req.files.length) {
+      return res.status(400).json({ error: 'No files uploaded.' });
+    }
   const fileNames = req.files?.map(file => file.filename);
 
   try {
