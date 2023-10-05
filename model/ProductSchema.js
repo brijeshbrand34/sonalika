@@ -35,8 +35,8 @@ const ProductSchema = new mongoose.Schema({
         // type:String,
         // required: true
     },
-    productPrice: {
-        type: Number,
+    productSubCategory: {
+        type: String,
         // required: true
     },
     productStock: {
