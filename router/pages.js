@@ -21,7 +21,7 @@ router.get('/getOnePages/:id', async (req, res) => {
     console.log("getOne", PagesID)
     console.log("get", req.params.id)
     try {
-        const Page = await Pages.findOne({ PagesId: PagesID });
+        const Page = await Pages.findOne({ _id: PagesID });
 
         if (!Page) {
             return res.status(404).json({ error: "Pages not found" });
@@ -44,15 +44,15 @@ router.put('/Pagesupdate/:PagesId', async (req, res) => {
 
     try {
         // Check if the career with the specified CareersId exists
-        const page = await Pages.findOne({ PagesId: pagesID });
+        const page = await Pages.findOne({ _id: pagesID });
         console.log('Found Career:', page);
 
         if (!page) {
-            return res.status(404).json({ error: 'Career not found' });
+            return res.status(404).json({ error: 'Pages not found' });
         }
 
         // Update the career
-        const result = await Careers.updateOne(
+        const result = await Pages.updateOne(
             { PagesId: pagesID },
             {
                 $set: {
@@ -74,3 +74,4 @@ router.put('/Pagesupdate/:PagesId', async (req, res) => {
         res.status(500).json({ error: 'Internal server error' });
     }
 });
+module.exports=router;

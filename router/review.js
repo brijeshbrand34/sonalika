@@ -84,6 +84,27 @@ router.get('/ReviewGetOne/:id', async (req, res) => {
   }
 });
 
+router.get('/Reviewproduct/:productId', async (req, res) => {
+  const ReviewproductId = req.params.productId;
+  console.log("getOne", ReviewId)
+  console.log("get", req.params.id)
+  try {
+    const Reviews = await Review.findOne({ Product_id: ReviewproductId }); // Fetch the Review based on the provided ID
+
+    if (!Review) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    console.log("Review information for ID", ReviewId, ":", Reviews);
+
+    res.json({ Reviews }); // Send the Review as JSON response
+  } catch (error) {
+    console.error("Error fetching Review:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
+
+
 router.put('/ReviewUpdate/:ReviewId', async (req, res) => {
   const ReviewId = req.params.ReviewId;
   const updates = req.body;

@@ -47,6 +47,7 @@ app.use(require("./router/careers"));
 app.use(require("./router/subCategories"));
 app.use(require("./router/popUp"));
 app.use(require("./router/topCollection"));
+app.use(require("./router/WhichList"));
 
 
 
