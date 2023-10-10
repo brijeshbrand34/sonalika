@@ -48,7 +48,7 @@ router.post('/InquiryAdd', async (req, res) => {
 });
 
 
-router.get('/Get', async (req, res) => {
+router.get('/Get-All-inquiry', async (req, res) => {
     try {
       const Inquirys = await Inquiry.find({}); // Fetch all Reviews from the database
   
@@ -60,3 +60,5 @@ router.get('/Get', async (req, res) => {
       res.status(500).json({ error: "Internal Server Error" });
     }
   });
+
+  module.exports = router;

@@ -48,6 +48,10 @@ app.use(require("./router/subCategories"));
 app.use(require("./router/popUp"));
 app.use(require("./router/topCollection"));
 app.use(require("./router/WhichList"));
+app.use(require("./router/inquiry"));
+app.use(require("./router/gemsStone"));
+
+
 
 
 
