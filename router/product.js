@@ -71,17 +71,13 @@ router.post('/addProduct', upload.array('productMainImage'), (req, res) => {
   });
 
   // Check the product category and add specific fields accordingly
-  if (productCategory === 'gold') {
     const { goldWeight, goldCarat } = req.body;
     newData.gold = { weight: goldWeight, carat: goldCarat };
-  } else if (productCategory === 'silver') {
     const { silverWeight } = req.body;
     newData.silver = { weight: silverWeight };
-  } else if (productCategory === 'diamond') {
     const { diamondCarat } = req.body;
     newData.diamond = { carat: diamondCarat };
-  }
-
+console.log(newData);
   newData.save()
     .then(data => {
       console.log('Data saved to MongoDB:', data);
