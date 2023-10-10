@@ -6,7 +6,8 @@ const PopUpSchema = new mongoose.Schema({
     PopupTitle: { type: String, required: true },
     PopupLink: { type: String, required: true },
     PopupImage: { type: [String] },
-    PopupPublish: { type: Boolean, default: false }
+    PopupPublish: { type: Boolean, default: false },
+    Popupdelay:{type:Number, default:0}
 })
 
 

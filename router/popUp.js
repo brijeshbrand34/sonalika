@@ -28,7 +28,7 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 router.post('/addpopup', upload.array('PopupImage'), (req, res) => {
-    const { PopupTitle, PopupLink } = req.body;
+    const { PopupTitle, PopupLink,Popupdelay } = req.body;
     const fileNames = req.files?.map(file => file.filename);
     console.log(fileNames)
     const newData = new PopUp({
@@ -36,6 +36,7 @@ router.post('/addpopup', upload.array('PopupImage'), (req, res) => {
         PopupTitle: PopupTitle,
         PopupLink: PopupLink,
         PopupImage: fileNames,
+        Popupdelay: Popupdelay,
     });
 
     newData.save()
@@ -86,7 +87,7 @@ router.get('/getOnePopUp/:id', async (req, res) => {
 
 // update popup
 router.put('/updatepopup/:popupId', upload.array('PopupImage'), async (req, res) => {
-    const { PopupTitle, PopupLink } = req.body;
+    const { PopupTitle, PopupLink,Popupdelay } = req.body;
     const PopupId = req.params.popupId;
   
     try {
@@ -103,6 +104,7 @@ router.put('/updatepopup/:popupId', upload.array('PopupImage'), async (req, res)
             PopupTitle: PopupTitle,
             PopupLink: PopupLink,
             PopupImage: fileNames,
+            Popupdelay:Popupdelay,
           },
         }
       );
