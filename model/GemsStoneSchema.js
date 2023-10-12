@@ -3,7 +3,7 @@ const mongoose = require('mongoose');
         GemsId:{type:String, required:true},
         GemsTilte:{type:String, required:true},
         GemsDiscription:{type:String, required:true},
-        GemsImage:{type:String, required:true},
+        GemsImage:{type:[String], required:true},
         GemsPublished:{type:Boolean, default:true},
     },{
         timestamps:true,

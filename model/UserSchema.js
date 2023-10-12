@@ -32,7 +32,6 @@ const UserSchema = new mongoose.Schema(
     userId: {
       type: String,
       required: true,
-      unique: true,
     },
     userCreateDate: {
       type: Date,
@@ -93,6 +92,6 @@ UserSchema.methods.generateAuthToken = async function () {
     console.log(err);
   }
 };
-UserSchema.index({ userId: 1 }, { unique: true });
+
 const User = mongoose.model("User", UserSchema);
 module.exports = User;

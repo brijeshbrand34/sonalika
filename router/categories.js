@@ -179,5 +179,3 @@ router.put('/publishCategory/:CatId', async (req, res) => {
 });
 
 module.exports = router;
-
-

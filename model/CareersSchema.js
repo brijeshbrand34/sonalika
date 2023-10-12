@@ -7,6 +7,6 @@ const CareersSchema = new mongoose.Schema({
 },{
     timestamps:true  
 })
-CareersSchema.index({ CareersId: 1 }, { unique: true });
+
 const Careers = mongoose.model('Careers', CareersSchema);
 module.exports = Careers;

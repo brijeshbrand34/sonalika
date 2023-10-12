@@ -56,11 +56,12 @@ function generateUniqueId() {
   router.put('/CartUpdate/:CartId', async (req, res) => {
     const CartId = req.params.CartId;
     const updates = req.body;
-    console.log("llllllll",req.body);
+    console.log("llllllll",req.body,req.params.CartId);
     const products=[{updates}];
+    console.log(products);
     try {
-      const result = await Cart.updateOne({ CartId: CartId }, { $set: products });
-  
+      const result = await Cart.updateOne({ CartId: CartId }, { $set: {cart:updates} });
+        
       if (result.n === 0) {
         return res.status(404).json({ error: 'Cart not found' });
 
@@ -120,7 +121,7 @@ function generateUniqueId() {
       }
   
       // Find the index of the product with the given productId
-      const productIndex = cart.products.findIndex((product) => product._id.toString() === productId);
+      const productIndex = cart.cart.findOne((product) => product._id.toString() === productId);
   
       if (productIndex === -1) {
         return res.status(404).json({ message: 'Product not found in cart' });

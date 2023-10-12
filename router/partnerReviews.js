@@ -72,7 +72,7 @@ router.get('/getOnePartnersReview/:id', async (req, res) => {
         const PartnersReviews = await PartnersReview.findOne({ PartnersReviewId: PartnersReviewId });
 
         if (!PartnersReviews) {
-            return res.status(404).json({ error: "PartnersReviewId not found" });
+            return res.status(404).json({ error: "Banner not found" });
         }
 
         console.log("PartnersReview information for ID", PartnersReviewId, ":", PartnersReviews);
@@ -85,9 +85,10 @@ router.get('/getOnePartnersReview/:id', async (req, res) => {
 });
 
 
-router.put('/update/:reviewsId', upload.array('PartnersReviewsImage'), async (req, res) => {
+router.put('/updatePartnerReview/:reviewsId', upload.array('PartnersReviewImage'), async (req, res) => {
     const { PartnersReviewName, Review } = req.body;
     const PartnersReviewId = req.params.reviewsId;
+    console.log(req.files,'files')
 
     try {
         if (!req.files || !req.files.length) {
@@ -131,29 +132,4 @@ router.delete('/deletePartnersReviews/:PartnersReviewId', async (req, res) => {
     }
 });
 
-router.put('/publishPartnersReview/:PartnersReviewId', async (req, res) => {
-    const { published } = req.body;
-    const PartnersReviewID = req.params.PartnersReviewId;
-
-    try {
-        const result = await PartnersReview.updateOne(
-            { PartnersReviewId: PartnersReviewID },
-            {
-                $set: {
-                    PartnersReviewPublished: published,
-                },
-            }
-        );
-        console.log("result-----", result);
-
-        if (result.n === 0) {
-            return res.status(404).json({ error: 'PartnersReview Published not found' });
-        }
-
-        res.status(200).json({ message: 'PartnersReview published update successfully' });
-    } catch (error) {
-        console.error(error);
-        res.status(500).json({ error: 'Internal server error' });
-    }
-});
 module.exports = router;

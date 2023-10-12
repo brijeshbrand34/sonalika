@@ -161,4 +161,3 @@ router.put('/publishUp/:popUpId', async (req, res) => {
   }
 });
 module.exports = router;
-

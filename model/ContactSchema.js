@@ -5,7 +5,6 @@ const ContactSchema = new mongoose.Schema(
     contactId: {
       type: String,
       required: true,
-      unique: true
     },
     contactUserName: {
       type: String,

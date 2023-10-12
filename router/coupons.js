@@ -42,7 +42,7 @@ router.get('/GetAllCoupons', async (req, res) => {
     try {
         const Coupon = await Coupons.find({});
         console.log("This is the Coupons information:", Coupon);
-        res.json(Coupons); // Send the Reviews as JSON response
+        res.json(Coupon); // Send the Reviews as JSON response
     } catch (error) {
         console.error("Error fetching Coupons:", error);
         res.status(500).json({ error: "Internal Server Error" });
@@ -84,7 +84,7 @@ router.put('/CouponUpdate/:CouponId', async (req, res) => {
   });
   
   router.delete('/CouponDelete/:CouponId', async (req, res) => {
-    const CouponsId = req.params.Coupons;
+    const CouponsId = req.params.CouponId;
     try {
       const deletedCoupons = await Coupons.findOneAndDelete({ CouponsId: CouponsId });
       if (!deletedCoupons) {

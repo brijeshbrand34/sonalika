@@ -19,7 +19,7 @@ const ShortVideoSchema = new mongoose.Schema({
 }, {
     timestamps: true
 });
-ShartVideoSchema.index({ ShartVideoId: 1 }, { unique: true });
+ShortVideoSchema.index({ ShartVideoId: 1 }, { unique: true });
 
 const ShartVideo = mongoose.model('ShartVideo', ShortVideoSchema);
 module.exports = ShartVideo;

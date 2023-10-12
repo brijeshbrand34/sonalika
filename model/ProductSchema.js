@@ -75,7 +75,7 @@ const ProductSchema = new mongoose.Schema({
             type: Number,
         },
     },
-    silver: {
+    Silver: {
         weight: {
             type: Number,
         },

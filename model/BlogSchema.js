@@ -25,7 +25,6 @@ blogConclusion:{
 },
 BlogId:{
     type:String,
-    unique: true
     //required:true
 },
 BlogDate:{

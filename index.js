@@ -40,23 +40,23 @@ app.use(require("./router/order"));
 app.use(require("./router/brands"));
 app.use(require("./router/categories"));
 app.use(require("./router/featureProducts"));
-app.use(require("./router/coupons"));
-app.use(require("./router/careers"));
-
 
 app.use(require("./router/subCategories"));
 app.use(require("./router/popUp"));
 app.use(require("./router/topCollection"));
-app.use(require("./router/WhichList"));
-app.use(require("./router/inquiry"));
-app.use(require("./router/gemsStone"));
 
-
-
-
-
+app.use(require("./router/homeAds"));
+app.use(require("./router/shortVideo"));
 app.use(require("./router/admin"));
 app.use(require("./router/websiteHeader"));
+app.use(require("./router/partnerReviews"));
+app.use(require("./router/coupons"));
+app.use(require("./router/careers"));
+app.use(require("./router/pages"));
+app.use(require("./router/price"));
+app.use(require("./router/wishlist"));
+app.use(require("./router/inquiry"));
+app.use(require("./router/gemstone"));
 
 app.use(express.urlencoded({ extended: true }));
 // app.get("/*", function (req, res) {

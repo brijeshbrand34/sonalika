@@ -25,10 +25,13 @@ function generateUniqueId() {
   return uniqueId;
 }
 const storage = multer.diskStorage({
-  destination: './backend/uploads/',
+  destination: "./backend/uploads/",
   filename: function (req, file, cb) {
-    cb(null, file.fieldname + '-' + Date.now() + path.extname(file.originalname));
-  }
+    cb(
+      null,
+      file.fieldname + "-" + Date.now() + path.extname(file.originalname)
+    );
+  },
 });
 
 const upload = multer({ storage });
@@ -126,7 +129,7 @@ router.post('/signin', async (req, res) => {
         res.status(400).json({ error: 'invalid credentials' });
       }
       else {
-        res.json({ message: 'user Signin successfully' });
+        res.json({ message: 'user Signin successfully',userData:userLogin });
       }
 
     }
@@ -198,46 +201,58 @@ router.delete("/deleteUser/:userId", async (req, res) => {
 //   }
 // });
 
-router.put("/UserUpdate/:UserId", upload.array('profileImage'), async (req, res) => {
-  const UserId = req.params.UserId;
-  const updates = req.body;
-  const { name, email, password, } = req.body;
-  console.log('UserId', UserId);
+
+router.put("/userUpdate/:userId", upload.array('profileImage'), async (req, res) => {
+  const userId = req.params.userId;
+  const { name, email, password,contact } = req.body;
+
   try {
-
-    // if (!req.files || !req.files.length) {
-    //   return res.status(400).json({ error: 'No files uploaded.' });
-    // }
-
     const fileNames = req.files.map((file) => file.filename);
 
+    // Find the admin userId
+    const adminToUpdate = await User.findById(userId);
 
-    const result = await User.updateOne({ UserId: UserId }, {
-      $set: {
-        name: name,
-
-        email: email,
-        password: password,
-        profileImage: fileNames,
-      }
-    });
-
-    if (result.n === 0) {
-      return res.status(404).json({ error: "User not found" });
+    if (!adminToUpdate) {
+      return res.status(404).json({ error: "userId not found" });
     }
 
-    res.status(200).json({ message: "User updated successfully" });
+    // Update the fields
+    adminToUpdate.name = name;
+    adminToUpdate.email = email;
+    adminToUpdate.contact = contact;
+    adminToUpdate.password = password;  // Include the password in the update
+    adminToUpdate.profileImage = fileNames;
+
+    // Save the changes to trigger the pre middleware
+    await adminToUpdate.save();
+
+    res.status(200).json({ message: "userId updated successfully" });
   } catch (error) {
     console.error(error);
     res.status(500).json({ error: "Internal server error" });
   }
 });
 
-
 router.get("/logout", (req, res) => {
   console.log("this is logout page");
   res.clearCookie("jwtoken", { path: "/" });
   res.status(200).send("user logout");
 });
+router.get('/user/:userId', async (req, res) => {
+  const ReviewproductId = req.params.userId;
+  try {
+    const user = await User.findOne({ userId: ReviewproductId }); // Fetch the Review based on the provided ID
 
+    if (!user) {
+      return res.status(404).json({ error: "Review not found" });
+    }
+
+    console.log("Review information for ID", ReviewproductId, ":", user.name);
+
+    res.json({ user }); // Send the Review as JSON response
+  } catch (error) {
+    console.error("Error fetching Review:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 module.exports = router;

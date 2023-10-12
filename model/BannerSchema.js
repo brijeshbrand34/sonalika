@@ -6,6 +6,10 @@ BannerTitle:{
 type:String,
 //required:true
 },
+BannerDescription:{
+type:String,
+//required:true
+},
 BannerImage:{
     type:[String],
     //required:true
@@ -16,7 +20,6 @@ BannerLink:{
 },
 BannerId:{
     type:String,
-    unique: true,
     //required:true
 },
 BannerDate:{

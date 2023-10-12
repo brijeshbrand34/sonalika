@@ -70,15 +70,14 @@ router.get('/getAllTopCollection', async (req, res) => {
 //   Get One TopCollection
 router.get('/getOneTopCollection/:TopCollectionId', async (req, res) => {
     const TopCollectionID = req.params.TopCollectionId;
-    console.log("getOne", TopCollectionId)
-    console.log("get", req.params.TopCollectionId)
+
     try {
         const TopCollect = await TopCollection.findOne({TopCollectionId : TopCollectionID }); 
 
         if (!TopCollect) {
             return res.status(404).json({ error: "FeatureProduct not found" });
         }
-        console.log("TopCollection information for ID", TopCollectionId, ":", TopCollect);
+        console.log("TopCollection information for ID", TopCollectionID, ":", TopCollect);
         res.json({ TopCollect });
     } catch (error) {
         console.error("Error fetching TopCollection:", error);

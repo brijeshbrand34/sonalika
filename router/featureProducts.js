@@ -71,18 +71,17 @@ router.get('/getAllFeatureProducts', async (req, res) => {
 //   Get One Blog Banner
 router.get('/getOneFeatureProducts/:id', async (req, res) => {
     const FeatureProductsID = req.params.id;
-    console.log("getOne", FeatureProductsID)
-    console.log("get", req.params.id)
+ 
     try {
         const FeatureProduct = await FeatureProducts.findOne({FeatureProductsId : FeatureProductsID }); // Fetch the Banner based on the provided ID
 
         if (!FeatureProduct) {
             return res.status(404).json({ error: "FeatureProduct not found" });
         }
-        console.log("FeatureProduct information for ID", FeatureProductId, ":", FeatureProduct);
+        console.log("FeatureProduct information for ID", FeatureProductsID, ":", FeatureProduct);
         res.json({ FeatureProduct }); // Send the Banner as JSON response
     } catch (error) {
-        console.error("Error fetching FeatureProduct:", error);
+        console.error("Error fetching Banner:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
@@ -131,29 +130,4 @@ router.delete('/deleteFeatureProducts/:FeatureProductsId', async (req, res) => {
     }
   });
   
-  router.put('/publishFeatureProducts/:FeatureProductsId', async (req, res) => {
-    const { published } = req.body;
-    const FeatureProductsID = req.params.FeatureProductsId;
-  
-    try {
-      const result = await FeatureProducts.updateOne(
-        { FeatureProductsId: FeatureProductsID },
-        {
-          $set: {
-            FeatureProductsPublished: published,
-          },
-        }
-      );
-      console.log("result-----", result);
-  
-      if (result.n === 0) {
-        return res.status(404).json({ error: 'FeatureProducts not found' });
-      }
-  
-      res.status(200).json({ message: 'FeatureProducts published update successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
   module.exports = router;

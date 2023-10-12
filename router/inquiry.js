@@ -21,7 +21,8 @@ router.post('/InquiryAdd', async (req, res) => {
     UserNumber,
     ProductName,
     UserEmail,
-    City , ZipCode} =  req.body;
+    City , ZipCode,description} =  req.body;
+    console.log(req.body,'body')
 
   try {
 
@@ -32,6 +33,7 @@ router.post('/InquiryAdd', async (req, res) => {
         UserEmail,
         City ,
         ZipCode, InquiryId: 'Inq' + generateUniqueId(),
+        description,
       ReviewDate: new Date()
     });
     console.log(user)

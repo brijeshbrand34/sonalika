@@ -15,7 +15,25 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+router.get('/getwebsiteheader/:id', async (req, res) => {
+  const websiteId = req.params.id;
+  console.log("AdminId", websiteId)
+  console.log("get", req.params.id)
+  try {
+    const website = await WebsiteHeader.findOne({ _id: websiteId }); // Fetch the website header based on the provided ID
 
+    if (!WebsiteHeader) {
+      return res.status(404).json({ error: "website header not found" });
+    }
+
+    console.log("website header information for ID", websiteId, ":", website);
+
+    res.json({ website }); // Send the website header as JSON response
+  } catch (error) {
+    console.error("Error fetching website header information:", error);
+    res.status(500).json({ error: "Internal Server Error" });
+  }
+});
 
 router.put('/websiteheaderImage/:Id', upload.array('websiteheaderImage'), async (req, res) => {
     const { Email, MobileNunber } = req.body;

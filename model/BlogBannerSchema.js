@@ -12,7 +12,6 @@ const BlogBannerSchema = new mongoose.Schema({
     },
     BlogBannerId: {
         type: String,
-        unique: true,
         //required:true
     },
     BlogBannerStartDate: {

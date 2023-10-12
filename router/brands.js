@@ -147,29 +147,4 @@ router.delete('/deleteBrand/:BrandId', async (req, res) => {
   }
 });
 
-router.put('/publishBrand/:BrandId', async (req, res) => {
-  const { published } = req.body;
-  const BrandID = req.params.BrandId;
-
-  try {
-    const result = await Brand.updateOne(
-      { BrandId: BrandID },
-      {
-        $set: {
-          brandPublished: published,
-        },
-      }
-    );
-    console.log("result-----", result);
-
-    if (result.n === 0) {
-      return res.status(404).json({ error: 'Brand not found' });
-    }
-
-    res.status(200).json({ message: 'Brand published update successfully' });
-  } catch (error) {
-    console.error(error);
-    res.status(500).json({ error: 'Internal server error' });
-  }
-});
 module.exports = router;

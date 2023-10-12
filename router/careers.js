@@ -47,7 +47,7 @@ router.get('/getAllCareers', async (req, res) => {
 
 router.get('/getOneCareers/:id', async (req, res) => {
     const CareersID = req.params.id;
-    console.log("getOne", CareersId)
+    console.log("getOne", CareersID)
     console.log("get", req.params.id)
     try {
         const Career = await Careers.findOne({ CareersId: CareersID });
@@ -56,46 +56,33 @@ router.get('/getOneCareers/:id', async (req, res) => {
             return res.status(404).json({ error: "Career not found" });
         }
 
-        console.log("PartnersReview information for ID", CareersIdId, ":", Career);
+        console.log("PartnersReview information for ID", CareersID, ":", Career);
 
-        res.json({ Career });
+        res.json({Career});
     } catch (error) {
         console.error("Error fetching Career:", error);
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
 
-router.put('/Careersupdate/:CareersId', async (req, res) => {
-    let { Careerstitle, Careerslink } = req.body;
-
-    console.log('Request Body:', req.body);
+router.put('/Careers-update/:CareersId', async (req, res) => {
+    const { Careertitles, Careerlink } = req.body;
     const CareersID = req.params.CareersId;
 
     try {
-        // Check if the career with the specified CareersId exists
-        const career = await Careers.findOne({ CareersId: CareersID });
-        console.log('Found Career:', career);
-
-        if (!career) {
-            return res.status(404).json({ error: 'Career not found' });
-        }
-
-        // Update the career
         const result = await Careers.updateOne(
             { CareersId: CareersID },
             {
                 $set: {
-                    CareersTitle: Careerstitle,
-                    CareersLink: Careerslink,
+                    CareersTitles: Careertitles,
+                    CareersLink: Careerlink,
                 },
             }
         );
-        console.log('Update Result:', result);
 
-        if (result.nModified === 0) {
-            return res.status(404).json({ error: 'Career not updated' });
+        if (result.n === 0) {
+            return res.status(404).json({ error: 'Career not found' });
         }
-
         res.status(200).json({ message: 'Careers updated successfully' });
     } catch (error) {
         console.error(error);
@@ -103,12 +90,10 @@ router.put('/Careersupdate/:CareersId', async (req, res) => {
     }
 });
 
-
-
 router.delete('/deleteCareers/:CareersId', async (req, res) => {
     const CareersID = req.params.CareersId;
     try {
-        const deletedCareers = await Careers.findOneAndDelete({ CareersId: CareersID });
+        const deletedCareers = await Careers.findOneAndDelete({ CareersId: CareersID});
         if (!deletedCareers) {
             return res.status(404).json({ error: 'Careers not found' });
         }

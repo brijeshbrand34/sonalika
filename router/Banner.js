@@ -33,13 +33,14 @@ const upload = multer({ storage });
 
 // Endpoint to handle form submission
 router.post('/addBanner', upload.array('BannerImage'), (req, res) => {
-  const { BannerTitle, BannerLink } = req.body;
+  const { BannerTitle, BannerLink,BannerDescription } = req.body;
   const fileNames = req.files?.map(file => file.filename);
   console.log(fileNames)
   const newData = new Banner({
     BannerId: 'bnr' + generateUniqueId(),
     BannerTitle: BannerTitle,
     BannerLink: BannerLink,
+    BannerDescription:BannerDescription,
     BannerImage: fileNames,
   });
 
@@ -94,7 +95,7 @@ router.get('/getOneBanner/:id', async (req, res) => {
 
 
 router.put('/update/:BannerId', upload.array('BannerImage'), async (req, res) => {
-  const { BannerTitle, BannerLink } = req.body;
+  const { BannerTitle, BannerLink,BannerDescription } = req.body;
   const BannerId = req.params.BannerId;
 
   try {
@@ -110,6 +111,7 @@ router.put('/update/:BannerId', upload.array('BannerImage'), async (req, res) =>
         $set: {
           BannerTitle: BannerTitle,
           BannerLink: BannerLink,
+          BannerDescription:BannerDescription,
           BannerImage: fileNames,
         },
       }

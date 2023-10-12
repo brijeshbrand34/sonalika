@@ -17,7 +17,6 @@ brandImage:{
 },
 brandId:{
     type:String,
-    unique: true
     //required:true
 },
 brandDate:{

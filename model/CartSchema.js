@@ -4,9 +4,9 @@ const CartSchema = new mongoose.Schema(
   {
     CartId: {
       type: String,
-      unique: true
       // required: true,
     },
+    cart:{type:Object},
     products:[{
       ProductId:{
         type: String,

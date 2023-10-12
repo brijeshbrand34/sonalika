@@ -74,7 +74,7 @@ router.post('/addProduct', upload.array('productMainImage'), (req, res) => {
     const { goldWeight, goldCarat } = req.body;
     newData.gold = { weight: goldWeight, carat: goldCarat };
     const { silverWeight } = req.body;
-    newData.silver = { weight: silverWeight };
+    newData.Silver = { weight: silverWeight };
     const { diamondCarat } = req.body;
     newData.diamond = { carat: diamondCarat };
 console.log(newData);
@@ -237,16 +237,12 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async
     };
 
     // Check the product category and add specific fields accordingly
-    if (productCategory === 'gold') {
-      const { goldWeight, goldCarat } = req.body;
-      updateFields.gold = { weight: goldWeight, carat: goldCarat };
-    } else if (productCategory === 'silver') {
-      const { silverWeight } = req.body;
-      updateFields.silver = { weight: silverWeight };
-    } else if (productCategory === 'diamond') {
-      const { diamondCarat } = req.body;
-      updateFields.diamond = { carat: diamondCarat };
-    }
+    const { goldWeight, goldCarat } = req.body;
+    newData.gold = { weight: goldWeight, carat: goldCarat };
+    const { silverWeight } = req.body;
+    newData.Silver = { weight: silverWeight };
+    const { diamondCarat } = req.body;
+    newData.diamond = { carat: diamondCarat };
 
     const result = await Product.updateOne(
       { productId: ProductId },

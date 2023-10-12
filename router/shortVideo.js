@@ -67,7 +67,7 @@ router.get('/getAllShartVideo', async (req, res) => {
 //   Get One Shart video
 router.get('/getOneShartVideo/:ShartVideoId', async (req, res) => {
     const ShartVideoID = req.params.ShartVideoId;
-    console.log("getOne", ShartVideoId)
+    console.log("getOne", ShartVideoID)
     console.log("get", req.params.ShartVideoId)
     try {
         const ShortVideoGet = await ShartVideo.findOne({ShartVideoId : ShartVideoID }); 
@@ -75,7 +75,7 @@ router.get('/getOneShartVideo/:ShartVideoId', async (req, res) => {
         if (!ShortVideoGet) {
             return res.status(404).json({ error: "FeatureProduct not found" });
         }
-        console.log("TopCollection information for ID", ShartVideoId, ":", ShortVideoGet);
+        console.log("TopCollection information for ID", ShartVideoID, ":", ShortVideoGet);
         res.json({ ShortVideoGet });
     } catch (error) {
         console.error("Error fetching TopCollection:", error);
@@ -84,7 +84,7 @@ router.get('/getOneShartVideo/:ShartVideoId', async (req, res) => {
 });
 
 // Update Short video 
-router.put('/update/ShartVideo/:ShartVideoId', upload.array('ShartVideoImage'), async (req, res) => {
+router.put('/update/ShartVideo/:ShartVideoId', upload.array('ShartVideoVideo'), async (req, res) => {
     const ShartVideoID = req.params.ShartVideoId;
     console.log(ShartVideoID);
     try {
@@ -121,33 +121,6 @@ router.delete('/deleteShartVideo/:ShartVideoId', async (req, res) => {
         return res.status(404).json({ error: 'ShartVideo not found' });
       }
       res.status(200).json({ message: 'ShartVideo deleted successfully' });
-    } catch (error) {
-      console.error(error);
-      res.status(500).json({ error: 'Internal server error' });
-    }
-  });
-
-  router.put('/publishshortVideo/:ShortVideoId', async (req, res) => {
-    const { published } = req.body;
-    const ShortVideoID = req.params.ShortVideoId;
-  
-    try {
-      const result = await PopUp.updateOne(
-        { ShartVideoId: ShortVideoID },
-        {
-          $set: {
-            ShartVideoPublished: published,
-          },
-        }
-      );
-  
-      console.log("result-----", result);
-  
-      if (result.n === 0) {
-        return res.status(404).json({ error: 'Short video not found' });
-      }
-  
-      res.status(200).json({ message: 'Short Video published successfully' });
     } catch (error) {
       console.error(error);
       res.status(500).json({ error: 'Internal server error' });
