@@ -20,7 +20,7 @@ router.get('/getwebsiteheader/:id', async (req, res) => {
   console.log("AdminId", websiteId)
   console.log("get", req.params.id)
   try {
-    const website = await WebsiteHeader.findOne({ _id: websiteId }); // Fetch the website header based on the provided ID
+    const website = await WebsiteHeader.find({ }); // Fetch the website header based on the provided ID
 
     if (!WebsiteHeader) {
       return res.status(404).json({ error: "website header not found" });
