@@ -15,12 +15,34 @@ const storage = multer.diskStorage({
   }
 });
 const upload = multer({ storage });
+router.post('/addwebsiteheader', upload.array('Image'), (req, res) => {
+  const { Email, MobileNunber } = req.body;
+  const fileNames = req.files?.map(file => file.filename);
+  console.log(fileNames)
+  const newData = new WebsiteHeader({
+    // websiteheaderId: 'websiteheader' + generateUniqueId(),
+    Email: Email,
+    MobileNunber: MobileNunber,
+    Image: fileNames,
+      
+  });
+
+  newData.save()
+      .then(data => {
+          console.log('Data saved to MongoDB:', data);
+          res.status(200).json({ message: 'Form data and files uploaded successfully.' });
+      })
+      .catch(err => {
+          console.error('Error saving data to MongoDB:', err);
+          res.status(500).json({ error: 'Failed to save form data and files.' });
+      });
+});
 router.get('/getwebsiteheader/:id', async (req, res) => {
   const websiteId = req.params.id;
   console.log("AdminId", websiteId)
   console.log("get", req.params.id)
   try {
-    const website = await WebsiteHeader.findOne({ }); // Fetch the website header based on the provided ID
+    const website = await WebsiteHeader.findOne({  }); // Fetch the website header based on the provided ID
 
     if (!WebsiteHeader) {
       return res.status(404).json({ error: "website header not found" });

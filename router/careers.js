@@ -15,11 +15,12 @@ function generateUniqueId() {
 }
 
 router.post('/add-Careers', (req, res) => {
-    const { Careerstitle, Careerslink } = req.body;
+    const { Careerstitle, Careerslink,CareersDescription } = req.body;
     const newData = new Careers({
         CareersId: 'career' + generateUniqueId(),
         CareersTitle: Careerstitle,
         CareersLink: Careerslink,
+        CareersDescription:CareersDescription,
     });
 
     newData.save()
@@ -66,7 +67,7 @@ router.get('/getOneCareers/:id', async (req, res) => {
 });
 
 router.put('/Careers-update/:CareersId', async (req, res) => {
-    const { Careertitles, Careerlink } = req.body;
+    const { Careertitles, Careerlink,CareersDescription } = req.body;
     const CareersID = req.params.CareersId;
 
     try {
@@ -76,6 +77,7 @@ router.put('/Careers-update/:CareersId', async (req, res) => {
                 $set: {
                     CareersTitles: Careertitles,
                     CareersLink: Careerlink,
+                    CareersDescription:CareersDescription,
                 },
             }
         );

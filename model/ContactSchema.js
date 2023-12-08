@@ -20,11 +20,11 @@ const ContactSchema = new mongoose.Schema(
     },
     contactWhatAreYouLookingFor: {
       type: String,
-      required: true,
+      // required: true,
     },
     contactWhereDidYouHearAboutUs: {
       type: String,
-      required: true,
+      // required: true,
     },
     contactMessage: {
       type: String,

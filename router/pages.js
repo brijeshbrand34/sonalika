@@ -3,6 +3,28 @@ const express = require("express");
 const router = express.Router();
 const Pages = require("../model/PagesSchema");
 
+router.post('/addpages',  (req, res) => {
+  const {PagesId, PagesTitle,PagesLink, PagesDescription } = req.body;
+ console.log(req.body)
+  const newData = new Pages({
+   
+    PagesId:PagesId,
+    PagesTitle: PagesTitle,
+    PagesLink: PagesLink,
+    PagesDescription: PagesDescription,
+      
+  });
+
+  newData.save()
+      .then(data => {
+          console.log('Data saved to MongoDB:', data);
+          res.status(200).json({ message: 'Form data and files uploaded successfully.' });
+      })
+      .catch(err => {
+          console.error('Error saving data to MongoDB:', err);
+          res.status(500).json({ error: 'Failed to save form data and files.' });
+      });
+});
 router.get("/getAllPages", async (req, res) => {
   try {
     const Page = await Pages.find({});

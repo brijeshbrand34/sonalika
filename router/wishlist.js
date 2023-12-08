@@ -28,7 +28,7 @@ router.post('/CreateWhichlist', async (req, res) => {
     }
 });
 
-router.get('/ReviewGetOne/:userId', async (req, res) => {
+router.get('/Whichlist/:userId', async (req, res) => {
     const userId = req.params.userId;
     console.log("getOne", userId)
     console.log("get", req.params.userId)
@@ -47,4 +47,17 @@ router.get('/ReviewGetOne/:userId', async (req, res) => {
         res.status(500).json({ error: "Internal Server Error" });
     }
 });
+router.delete('/removeWishlist/:ProductId', async (req, res) => {
+    const ProductID = req.params.ProductId;
+    try {
+      const deletedWishList = await WhichLists.findOneAndDelete({ ProductId : ProductID });
+      if (!deletedWishList) {
+        return res.status(404).json({ error: 'wishlist not found' });
+      }
+      res.status(200).json({ message: 'wishlist deleted successfully' });
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ error: 'Internal server error' });
+    }
+  });
 module.exports = router;

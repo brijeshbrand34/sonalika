@@ -47,6 +47,7 @@ router.post('/addProduct', upload.array('productMainImage'), (req, res) => {
     featuredDeals,
     newCollection,
     dealsOfTheWeek,
+    labourCharges,
   } = req.body;
 
   const fileNames = req.files?.map(file => file.filename);
@@ -65,6 +66,7 @@ router.post('/addProduct', upload.array('productMainImage'), (req, res) => {
     featuredDeals,
     newCollection,
     dealsOfTheWeek,
+    labourCharges,
     published: true,
     productDate: new Date(),
     productMainImage: fileNames,
@@ -206,6 +208,7 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async
     featuredDeals,
     newCollection,
     dealsOfTheWeek,
+    labourCharges,
   } = req.body;
   const ProductId = req.params.ProductId;
 
@@ -232,17 +235,18 @@ router.put('/updateProducts/:ProductId', upload.array('productMainImage'), async
       featuredDeals,
       newCollection,
       dealsOfTheWeek,
+      labourCharges,
       published: true,
       productDate: new Date(),
     };
 
     // Check the product category and add specific fields accordingly
     const { goldWeight, goldCarat } = req.body;
-    newData.gold = { weight: goldWeight, carat: goldCarat };
+    updateFields.gold = { weight: goldWeight, carat: goldCarat };
     const { silverWeight } = req.body;
-    newData.Silver = { weight: silverWeight };
+    updateFields.Silver = { weight: silverWeight };
     const { diamondCarat } = req.body;
-    newData.diamond = { carat: diamondCarat };
+    updateFields.diamond = { carat: diamondCarat };
 
     const result = await Product.updateOne(
       { productId: ProductId },

@@ -59,6 +59,10 @@ const ProductSchema = new mongoose.Schema({
         type: String,
         // required: true
     },
+    labourCharges: {
+        type: Number,
+        // required: true
+    },
     published: {
         type: Boolean,
         // required: true
