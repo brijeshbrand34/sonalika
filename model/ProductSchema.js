@@ -88,6 +88,9 @@ const ProductSchema = new mongoose.Schema({
         carat: {
             type: Number,
         },
+        price: {
+            type: Number,
+        },
     },
 });
 
