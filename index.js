@@ -57,6 +57,7 @@ app.use(require("./router/price"));
 app.use(require("./router/wishlist"));
 app.use(require("./router/inquiry"));
 app.use(require("./router/gemstone"));
+app.use(require("./router/gemsStoneBanner"));
 
 app.use(express.urlencoded({ extended: true }));
 // app.get("/*", function (req, res) {

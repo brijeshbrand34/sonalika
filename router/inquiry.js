@@ -63,4 +63,23 @@ router.get('/Get-All-inquiry', async (req, res) => {
     }
   });
 
+  router.put("/inquery-read/:id", async(req, res)=>{
+    const inqueryId = req.params.id;
+    if(!inqueryId){
+        return res.status(404).json({message : "Inqury Id not find"})
+    }
+      try {
+        const inqury = await Inquiry.findById(inqueryId);
+        if(!inqury){
+            return res.status(404),jsan({message: "Inqury is not eixt with given ".inqueryId })
+        }
+        inqury.isRead = true;
+        await inqury.save();
+        return res.status(200).json({massegs: "Inqury is change converted to read"});
+      } catch (error) {
+        return res.status(500).json({message:"Internal server error "});
+      }
+
+  })
+
   module.exports = router;

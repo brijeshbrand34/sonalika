@@ -87,13 +87,30 @@ router.get('/getOneTopCollection/:TopCollectionId', async (req, res) => {
 
 // Update topCollection 
 router.put('/update/TopCollection/:TopCollectionId', upload.array('TopCollectionImage'), async (req, res) => {
-    const {  TopCollectionLink,CategoryId } = req.body;
+    const {  TopCollectionLink,CategoryId,TopCollectionImage } = req.body;
     const TopCollectionID = req.params.TopCollectionId;
     console.log(TopCollectionID);
     try {
         if (!req.files || !req.files.length) {
-            return res.status(400).json({ error: 'No files uploaded.' });
-        }
+            const result = await TopCollection.updateOne(
+                { TopCollectionId : TopCollectionID },
+              {
+                $set: {
+                    TopCollectionLink: TopCollectionLink,
+                    CatagoryId: CategoryId,
+                    TopCollectionImage: TopCollectionImage,
+                },
+              }
+            );
+    
+            if (result.n === 0) {
+              return res.status(404).json({ error: "Brand not found" });
+            }
+    
+            return res.status(200).json({ message: "Brand  updated with image successfully" });
+    
+            // return res.status(400).json({ error: 'No files uploaded.' });
+          }
         const fileNames = req.files.map((file) => file.filename);
         const result = await TopCollection.updateOne(
             { TopCollectionId : TopCollectionID },

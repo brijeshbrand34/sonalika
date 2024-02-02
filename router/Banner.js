@@ -95,15 +95,33 @@ router.get('/getOneBanner/:id', async (req, res) => {
 
 
 router.put('/update/:BannerId', upload.array('BannerImage'), async (req, res) => {
-  const { BannerTitle, BannerLink,BannerDescription } = req.body;
-  const BannerId = req.params.BannerId;
 
+  console.log(req.body)
+  const { BannerTitle, BannerLink,BannerDescription,BannerImage } = req.body;
+  const BannerId = req.params.BannerId;
+  const fileNames = req.files.map((file) => file.filename);
   try {
     if (!req.files || !req.files.length) {
-      return res.status(400).json({ error: 'No files uploaded.' });
-    }
 
-    const fileNames = req.files.map((file) => file.filename);
+      const result = await Banner.updateOne(
+        { BannerId: BannerId },
+        {
+          $set: {
+            BannerTitle: BannerTitle,
+            BannerLink: BannerLink,
+            BannerDescription:BannerDescription,
+            BannerImage: BannerImage,
+          },
+        }
+      );
+  
+      if (result.n === 0) {
+        return res.status(404).json({ error: 'Banner not found' });
+      }
+  
+      return res.status(200).json({ message: 'Banner updated with image successfully' });
+    }
+    
 
     const result = await Banner.updateOne(
       { BannerId: BannerId },
@@ -112,7 +130,7 @@ router.put('/update/:BannerId', upload.array('BannerImage'), async (req, res) =>
           BannerTitle: BannerTitle,
           BannerLink: BannerLink,
           BannerDescription:BannerDescription,
-          BannerImage: fileNames,
+          BannerImage: fileNames?fileNames:BannerImage,
         },
       }
     );

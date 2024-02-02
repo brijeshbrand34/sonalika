@@ -36,7 +36,7 @@ router.post('/addBlogBanner', upload.array('BlogBannerImage'), (req, res) => {
     const { BlogBannerTitle, BlogStartdate, BlogEnddate } = req.body;
     const fileNames = req.files?.map(file => file.filename);
     const newData = new BlogBanner({
-        BannerId: 'Blogbnr' + generateUniqueId(),
+        BlogBannerId: 'Blogbnr' + generateUniqueId(),
         BlogBannerTitle: BlogBannerTitle,
         BlogBannerStartDate: BlogStartdate,
         BlogBannerImage: fileNames,
@@ -86,15 +86,36 @@ router.get('/getOneBlogBanner/:id', async (req, res) => {
 
 
 router.put('/update/Blog-banner/:BlogBannerId', upload.array('BlogBannerImage'), async (req, res) => {
-    const { BlogBannerTitle, BlogBannerStartdate, Blogbannerenddate } = req.body;
+    const { BlogBannerTitle, BlogBannerStartdate, Blogbannerenddate,BlogBannerImage } = req.body;
     const BlogBannerId = req.params.BlogBannerId;
+    const fileNames = req.files.map((file) => file.filename);
+    const bannner = await BlogBanner.find({_id: BlogBannerId});
+    console.log(bannner);
     try {
         if (!req.files || !req.files.length) {
-            return res.status(400).json({ error: 'No files uploaded.' });
-        }
-        const fileNames = req.files.map((file) => file.filename);
+            const result = await BlogBanner.updateOne(
+                { _id: BlogBannerId },
+              {
+                $set: {
+                    BlogBannerTitle: BlogBannerTitle,
+                    BlogBannerStartDate: BlogBannerStartdate,
+                    BlogBannerEndDate: Blogbannerenddate,
+                    BlogBannerImage: BlogBannerImage,
+                },
+              }
+            );
+    
+            if (result.n === 0) {
+              return res.status(404).json({ error: "BlogBanner not found" });
+            }
+    
+            return res.status(200).json({ message: "BlogBanner  updated with image successfully" });
+    
+            // return res.status(400).json({ error: 'No files uploaded.' });
+          }
+       
         const result = await BlogBanner.updateOne(
-            { BlogBannerId: BlogBannerId },
+            { _id: BlogBannerId },
             {
                 $set: {
                     BlogBannerTitle: BlogBannerTitle,

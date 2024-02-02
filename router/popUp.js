@@ -76,7 +76,7 @@ router.get('/getOnePopUp/:id', async (req, res) => {
         return res.status(404).json({ error: "Banner not found" });
       }
   
-      console.log("Popup information for ID", PopUpIdId, ":", popup);
+      console.log("Popup information for ID", PopUpId, ":", popup);
   
       res.json({ popup }); 
     } catch (error) {
@@ -87,12 +87,30 @@ router.get('/getOnePopUp/:id', async (req, res) => {
 
 // update popup
 router.put('/updatepopup/:popupId', upload.array('PopupImage'), async (req, res) => {
-    const { PopupTitle, PopupLink,Popupdelay } = req.body;
+    const { PopupTitle, PopupLink,Popupdelay,PopupImage } = req.body;
     const PopupId = req.params.popupId;
   
     try {
       if (!req.files || !req.files.length) {
-        return res.status(400).json({ error: 'No files uploaded.' });
+        const result = await PopUp.updateOne(
+          { PopupId: PopupId },
+          {
+            $set: {
+              PopupTitle: PopupTitle,
+              PopupLink: PopupLink,
+              PopupImage: PopupImage,
+              Popupdelay:Popupdelay,
+            },
+          }
+        );
+
+        if (result.n === 0) {
+          return res.status(404).json({ error: "PopupImage not found" });
+        }
+
+        return res.status(200).json({ message: "PopupImage  updated with image successfully" });
+
+        // return res.status(400).json({ error: 'No files uploaded.' });
       }
   
       const fileNames = req.files.map((file) => file.filename);

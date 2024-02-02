@@ -58,12 +58,29 @@ router.get('/getwebsiteheader/:id', async (req, res) => {
 });
 
 router.put('/websiteheaderImage/:Id', upload.array('websiteheaderImage'), async (req, res) => {
-    const { Email, MobileNunber } = req.body;
+    const { Email, MobileNunber,websiteheaderImage } = req.body;
     const WebsiteHeaderId = req.params.Id;
     const currentDate = new Date();
     try {
       if (!req.files || !req.files.length) {
-        return res.status(400).json({ error: 'No files uploaded.' });
+        const result = await WebsiteHeader.updateOne(
+          { _Id: WebsiteHeaderId},
+          {
+            $set: {
+              Email: Email,
+              MobileNunber: MobileNunber,
+              Image: websiteheaderImage,
+            },
+          }
+        );
+
+        if (result.n === 0) {
+          return res.status(404).json({ error: "Websiteheader not found" });
+        }
+
+        return res.status(200).json({ message: "Websiteheader  updated with image successfully" });
+
+        // return res.status(400).json({ error: 'No files uploaded.' });
       }
   
       const fileNames = req.files.map((file) => file.filename);

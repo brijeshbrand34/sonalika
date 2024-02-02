@@ -100,15 +100,36 @@ router.get('/getOneCat/:id', async (req, res) => {
 
 router.put('/updateCategory/:CatId', upload.array('catImage'), async (req, res) => {
   const { catTitle, brand,
-    catPublished } = req.body;
+    catPublished,catImage } = req.body;
   const CatId = req.params.CatId;
   const currentDate = new Date();
+  const fileNames = req.files.map((file) => file.filename);
   try {
     if (!req.files || !req.files.length) {
-      return res.status(400).json({ error: 'No files uploaded.' });
-    }
+      const result = await Cat.updateOne(
+        { catId: CatId },
+        {
+          $set: {
+            catTitle: catTitle,
+            catPublished: catPublished,
+            brand: brand,
+            catImage:catImage,
+            catDate: currentDate
+            
+          },
+        }
+      );
 
-    const fileNames = req.files.map((file) => file.filename);
+      if (result.n === 0) {
+        return res.status(404).json({ error: "Cat not found" });
+      }
+
+      return res.status(200).json({ message: "Cat  updated with image successfully" });
+
+      // return res.status(400).json({ error: 'No files uploaded.' });
+    }
+  
+  
 
     const result = await Cat.updateOne(
       { catId: CatId },

@@ -126,5 +126,21 @@ router.delete('/deleteShartVideo/:ShartVideoId', async (req, res) => {
       res.status(500).json({ error: 'Internal server error' });
     }
   });
+  router.post("/shortvideoPublish/:Id", async (req, res) => {
+    const Id = req.params.Id;
+    try {
+      const result = await ShartVideo.findOne({ ShartVideoId: Id });
+      if (result) {
+        console.log(result);
+        result.ShartVideoPublished=result.ShartVideoPublished===true?false:true
+        await result.save()
+        res.status(200).json({message:`Blog Published ${result.ShartVideoPublished}`})
+      } else {
+        res.status(400).json({ message: "ShortVideo not found" });
+      }
+    } catch (error) {
+      res.status(500).json({ message: "internal server error" });
+    }
+  });
   
   module.exports = router;

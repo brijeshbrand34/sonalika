@@ -28,6 +28,7 @@ const InquirySchema = new mongoose.Schema(
 
             // required: true
         },
+        isRead:{type:Boolean, default :false}
 
     })
     const Inquiry = mongoose.model("Inquiry", InquirySchema);

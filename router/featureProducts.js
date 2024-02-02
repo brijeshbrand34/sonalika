@@ -88,12 +88,30 @@ router.get('/getOneFeatureProducts/:id', async (req, res) => {
 
 
 router.put('/update/FeatureProducts/:FeatureProductsId', upload.array('FeatureProductsImage'), async (req, res) => {
-    const { FeatureProductsTitle, FeatureProductsStartdate, FeatureProductsenddate } = req.body;
+    const { FeatureProductsTitle, FeatureProductsStartdate, FeatureProductsenddate ,FeatureProductsImage} = req.body;
     const FeatureProductsID = req.params.FeatureProductsId;
     try {
         if (!req.files || !req.files.length) {
-            return res.status(400).json({ error: 'No files uploaded.' });
-        }
+            const result = await FeatureProducts.updateOne(
+                { FeatureProductsId : FeatureProductsID },
+              {
+                $set: {
+                    FeatureProductsTitle: FeatureProductsTitle,
+                    FeatureProductsStarDate: FeatureProductsStartdate,
+                    FeatureProductsEndDate: FeatureProductsenddate,
+                    FeatureProductsImage: FeatureProductsImage,
+                },
+              }
+            );
+    
+            if (result.n === 0) {
+              return res.status(404).json({ error: "FeatureProduct not found" });
+            }
+    
+            return res.status(200).json({ message: "FeatureProduct  updated with image successfully" });
+    
+            // return res.status(400).json({ error: 'No files uploaded.' });
+          }
         const fileNames = req.files.map((file) => file.filename);
         const result = await FeatureProducts.updateOne(
             { FeatureProductsId : FeatureProductsID },

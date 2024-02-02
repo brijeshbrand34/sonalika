@@ -65,6 +65,7 @@ const ProductSchema = new mongoose.Schema({
     },
     published: {
         type: Boolean,
+        default:true
         // required: true
     },
     productDate: {

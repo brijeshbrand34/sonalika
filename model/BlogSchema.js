@@ -30,6 +30,10 @@ BlogId:{
 BlogDate:{
     type: Date,
 },
+published:{
+    type:Boolean,
+    default:true
+}
 
 });
 
